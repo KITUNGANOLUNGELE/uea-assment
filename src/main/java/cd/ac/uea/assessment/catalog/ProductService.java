@@ -11,7 +11,7 @@ public class ProductService {
     public boolean checkProductQuantity(Long id){
         var p = this.productRepository.findById(id);
         if (!p || p.getQuantity<=0){
-            throw new Exception("product does not exist or No stock for this product");
+            return  false;
         }
 
         return true;

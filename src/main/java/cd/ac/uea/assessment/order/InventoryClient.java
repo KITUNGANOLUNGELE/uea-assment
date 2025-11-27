@@ -19,16 +19,11 @@ public class InventoryClient {
         *  - creer un service pour produit
         *  - Appeler ce service ici
         *  */
+        boolean isValideProduct = productService.checkProductQuantity(productId);
 
-        Optional<Product> p = Product.findById(productId);
-        //if p does not exist throw new error
-        if(!p || p.quantity <= 0){
-            throw new Exception("");
+        if(isValideProduct == false){
+            throw new Exception("Can not process this Order, Quantity check failed");
         }
-
-        // In a real scenario, this might call another microservice
-
-        //return true if it doens
         return true;
     }
 }
