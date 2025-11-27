@@ -1,0 +1,47 @@
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: uea
+      POSTGRES_USER: henock
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/uea
+      SPRING_DATASOURCE_USERNAME: henock
+      SPRING_DATASOURCE_PASSWORD: password123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+
+  tests:
+    profiles:
+      - test
+    image: eclipse-temurin:21-jdk-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gradle_cache:/root/.gradle
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/uea
+      SPRING_DATASOURCE_USERNAME: henock
+      SPRING_DATASOURCE_PASSWORD: password123
+      POSTGRES_DB: uea
+      POSTGRES_USER: henock
+      POSTGRES_PASSWORD: password123
+      TESTCONTAINERS_RYUK_DISABLED: "true"
+      TESTCONTAINERS_HOST_OVERRIDE: "host.docker.internal"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ./gradlew test
+
+volumes:
+  gradle_cache:

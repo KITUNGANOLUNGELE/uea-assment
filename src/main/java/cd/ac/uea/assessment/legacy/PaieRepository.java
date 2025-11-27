@@ -1,0 +1,6 @@
+package cd.ac.uea.assessment.legacy;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaieRepository extends JpaRepository<Paie, Long> {
+}
