@@ -13,9 +13,6 @@ public class Paie {
 
     private float amount;
 
-    public Paie (float amount){
-        this.amount = amount;
-    }
 
     public void setId(Long id) {
         this.id = id;
